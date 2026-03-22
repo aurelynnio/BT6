@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sách</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background: #f2f2f2; text-align: left; }
+        .actions form { display: inline; }
+    </style>
+</head>
+<body>
+    <h1>Danh sách sách</h1>
+    <p><a th:href="@{/books/new}">Thêm sách</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tiêu đề</th>
+                <th>Tác giả</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}">1</td>
+                <td th:text="${book.title}">Title</td>
+                <td th:text="${book.author}">Author</td>
+                <td class="actions">
+                    <a th:href="@{/books/edit/{id}(id=${book.id})}">Sửa</a>
+                    <form th:action="@{/books/delete/{id}(id=${book.id})}" method="post">
+                        <button type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(books)}">
+                <td colspan="4">Chưa có sách nào.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/home}">Về trang chủ</a></p>
+</body>
+</html>

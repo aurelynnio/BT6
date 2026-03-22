@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Trang chủ</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h1 th:text="${message}">Chào mừng</h1>
+    <p style="margin-top: 16px;"><a th:href="@{/books}" style="color: #4361ee;">Quản lý sách</a></p>
+    <p style="margin-top: 8px;"><a th:href="@{/products}" style="color: #4361ee;">Quản lý sản phẩm</a></p>
+</section>
+</body>
+</html>

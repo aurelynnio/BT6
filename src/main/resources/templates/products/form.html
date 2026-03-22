@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${mode == 'edit' ? 'Sửa sản phẩm' : 'Thêm sản phẩm'}">Form sản phẩm</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <style>
+        h1 { color: #1a1a2e; margin-bottom: 24px; font-size: 26px; }
+        .form-card { background: #fff; border-radius: 10px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); max-width: 600px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #333; font-size: 14px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #4361ee; box-shadow: 0 0 0 3px rgba(67,97,238,0.1); }
+        .form-group input[type="file"] { padding: 8px; }
+        .error { color: #e63946; font-size: 13px; margin-top: 4px; }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; border: none; transition: background 0.2s; }
+        .btn-primary { background: #4361ee; color: #fff; }
+        .btn-primary:hover { background: #3a56d4; }
+        .btn-secondary { background: #6c757d; color: #fff; margin-left: 8px; }
+        .btn-secondary:hover { background: #5a6268; }
+        .form-actions { margin-top: 24px; display: flex; align-items: center; }
+        .current-img { margin-top: 8px; }
+        .current-img img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
+        .current-img span { display: block; font-size: 12px; color: #888; margin-top: 4px; }
+    </style>
+
+    <h1 th:text="${mode == 'edit' ? 'Sửa sản phẩm' : 'Thêm sản phẩm'}">Form sản phẩm</h1>
+
+    <div class="form-card">
+        <form th:action="${mode == 'edit'} ? @{/products/edit/{id}(id=${product.id})} : @{/products}"
+              method="post" enctype="multipart/form-data" th:object="${product}">
+
+            <!-- Tên sản phẩm -->
+            <div class="form-group">
+                <label for="name">Tên sản phẩm <span style="color:#e63946">*</span></label>
+                <input type="text" id="name" th:field="*{name}" placeholder="Nhập tên sản phẩm" />
+                <div th:if="${#fields.hasErrors('name')}" class="error">
+                    <span th:errors="*{name}">Lỗi tên</span>
+                </div>
+            </div>
+
+            <!-- Giá sản phẩm -->
+            <div class="form-group">
+                <label for="price">Giá sản phẩm (VNĐ) <span style="color:#e63946">*</span></label>
+                <input type="number" id="price" th:field="*{price}" min="1" max="9999999"
+                       placeholder="Nhập giá từ 1 - 9,999,999" />
+                <div th:if="${#fields.hasErrors('price')}" class="error">
+                    <span th:errors="*{price}">Lỗi giá</span>
+                </div>
+            </div>
+
+            <!-- Danh mục -->
+            <div class="form-group">
+                <label for="category">Danh mục <span style="color:#e63946">*</span></label>
+                <select id="category" th:field="*{category.id}">
+                    <option value="">-- Chọn danh mục --</option>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Danh mục</option>
+                </select>
+            </div>
+
+            <!-- Hình ảnh -->
+            <div class="form-group">
+                <label for="imageFile">Hình ảnh sản phẩm</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*" />
+                <div th:if="${#fields.hasErrors('image')}" class="error">
+                    <span th:errors="*{image}">Lỗi hình ảnh</span>
+                </div>
+
+                <!-- Hiển thị ảnh hiện tại khi sửa -->
+                <div th:if="${mode == 'edit' and product.image != null and !product.image.isEmpty()}" class="current-img">
+                    <span>Ảnh hiện tại:</span>
+                    <img th:src="@{'/uploads/' + ${product.image}}" alt="current image" />
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"
+                        th:text="${mode == 'edit' ? 'Cập nhật' : 'Thêm mới'}">Lưu</button>
+                <a th:href="@{/products}" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

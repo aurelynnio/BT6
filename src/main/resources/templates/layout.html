@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:title-pattern="$CONTENT_TITLE - Quản lý sản phẩm">Quản lý sản phẩm</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* Header */
+        .header { background: #1a1a2e; color: #fff; padding: 16px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .header .container { display: flex; justify-content: space-between; align-items: center; }
+        .header .logo { font-size: 22px; font-weight: 700; color: #4361ee; text-decoration: none; }
+        .header nav a { color: #ccc; text-decoration: none; margin-left: 24px; font-size: 15px; font-weight: 500; transition: color 0.2s; }
+        .header nav a:hover, .header nav a.active { color: #fff; }
+
+        /* Container */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; width: 100%; }
+
+        /* Main content */
+        .main-content { flex: 1; padding: 30px 0; }
+
+        /* Footer */
+        .footer { background: #1a1a2e; color: #888; text-align: center; padding: 16px 0; font-size: 13px; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a th:href="@{/}" class="logo">QLSP</a>
+            <nav>
+                <a th:href="@{/}">Trang chủ</a>
+                <a th:href="@{/products}">Sản phẩm</a>
+                <a th:href="@{/categories}">Danh mục</a>
+                <a th:href="@{/books}">Sách</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Content area -->
+    <main class="main-content">
+        <div class="container">
+            <section layout:fragment="content">
+                <p>Nội dung trang</p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Quản lý sản phẩm - Spring Boot Demo</p>
+        </div>
+    </footer>
+</body>
+</html>

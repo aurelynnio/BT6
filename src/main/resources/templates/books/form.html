@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${mode == 'edit' ? 'Sửa sách' : 'Thêm sách'}">Form</title>
+</head>
+<body>
+    <h1 th:text="${mode == 'edit' ? 'Sửa sách' : 'Thêm sách'}">Form</h1>
+
+    <form th:action="${mode == 'edit'} ? @{/books/edit/{id}(id=${book.id})} : @{/books}" method="post">
+        <p>
+            <label>Tiêu đề:</label>
+            <input type="text" name="title" th:value="${book.title}" required />
+        </p>
+        <p>
+            <label>Tác giả:</label>
+            <input type="text" name="author" th:value="${book.author}" required />
+        </p>
+        <button type="submit" th:text="${mode == 'edit' ? 'Cập nhật' : 'Thêm mới'}">Lưu</button>
+        <a th:href="@{/books}">Hủy</a>
+    </form>
+</body>
+</html>

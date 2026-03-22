@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Không có quyền truy cập</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <style>
+        .forbidden-wrap {
+            max-width: 720px;
+            margin: 24px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+            text-align: center;
+        }
+        .code {
+            font-size: 54px;
+            font-weight: 800;
+            color: #e63946;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .title {
+            font-size: 28px;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+        .desc {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .btn-home {
+            background: #4361ee;
+            color: #fff;
+        }
+        .btn-back {
+            background: #f1f3f5;
+            color: #1a1a2e;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+
+    <div class="forbidden-wrap">
+        <div class="code">403</div>
+        <h1 class="title">Bạn không có quyền truy cập</h1>
+        <p class="desc">
+            Tài khoản hiện tại không có quyền thực hiện chức năng này.
+            Vui lòng đăng nhập bằng tài khoản có quyền ADMIN để tiếp tục.
+        </p>
+        <div class="actions">
+            <a th:href="@{/products}" class="btn btn-home">Quay lại danh sách sản phẩm</a>
+            <a href="javascript:history.back()" class="btn btn-back">Quay lại trang trước</a>
+        </div>
+    </div>
+</section>
+</body>
+</html>
