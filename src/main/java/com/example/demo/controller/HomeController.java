@@ -1,17 +1,22 @@
- package com.example.demo.controller;
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
 
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
+@Controller
 public class HomeController {
-    
-    @GetMapping("/home")
-    @ResponseBody
-    public String home(Principal principal) {
-        return "Hello, " + principal.getName();
+
+    @GetMapping({"/", "/home"})
+    public String home(Model model, Principal principal) {
+        model.addAttribute("username", principal != null ? principal.getName() : "Guest");
+        return "home";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 }

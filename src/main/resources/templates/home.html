@@ -3,13 +3,148 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Trang chủ</title>
+    <title>Tổng quan</title>
 </head>
 <body>
 <section layout:fragment="content">
-    <h1 th:text="${message}">Chào mừng</h1>
-    <p style="margin-top: 16px;"><a th:href="@{/books}" style="color: #4361ee;">Quản lý sách</a></p>
-    <p style="margin-top: 8px;"><a th:href="@{/products}" style="color: #4361ee;">Quản lý sản phẩm</a></p>
+    <style>
+        .hero { display: grid; grid-template-columns: 1.35fr .9fr; gap: 20px; }
+        .hero-card, .quick-card {
+            background: rgba(255,255,255,0.88);
+            border: 1px solid rgba(17,17,17,0.08);
+            border-radius: 28px;
+            padding: 28px;
+        }
+        .eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #6d6d6d;
+            margin-bottom: 14px;
+        }
+        h1 {
+            font-size: clamp(38px, 6vw, 72px);
+            line-height: 0.95;
+            letter-spacing: -0.06em;
+            margin-bottom: 18px;
+            max-width: 8ch;
+        }
+        .lead {
+            color: #5e5e5e;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 56ch;
+            margin-bottom: 24px;
+        }
+        .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 22px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid rgba(17,17,17,0.12);
+        }
+        .btn-dark { background: #111111; color: #ffffff; border-color: #111111; }
+        .btn-light { background: #ffffff; color: #111111; }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 26px;
+        }
+        .stat {
+            padding: 18px;
+            border-radius: 22px;
+            background: #111111;
+            color: #ffffff;
+        }
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 10px;
+        }
+        .stat-value {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+        .quick-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(241,241,239,0.96));
+        }
+        .quick-title { font-size: 24px; margin-bottom: 10px; }
+        .quick-text { color: #666; line-height: 1.7; }
+        .mini-list { display: grid; gap: 10px; }
+        .mini-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(17,17,17,0.08);
+            background: rgba(255,255,255,0.84);
+            text-decoration: none;
+        }
+        .mini-item strong { font-size: 14px; }
+        .mini-item span { color: #6d6d6d; font-size: 13px; }
+        @media (max-width: 860px) {
+            .hero { grid-template-columns: 1fr; }
+        }
+    </style>
+
+    <div class="hero">
+        <div class="hero-card">
+            <div class="eyebrow">Dashboard</div>
+            <h1>Quản lý sản phẩm theo cách tối giản.</h1>
+            <p class="lead">
+                Không còn các trang phụ gây nhiễu. Luồng chính tập trung vào sản phẩm, danh mục, giỏ hàng và đặt hàng với giao diện đen trắng, sạch và hiện đại.
+            </p>
+            <div class="actions">
+                <a th:href="@{/products}" class="btn btn-dark">Vào danh sách sản phẩm</a>
+                <a th:href="@{/cart}" class="btn btn-light">Xem giỏ hàng</a>
+            </div>
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-label">Current User</div>
+                    <div class="stat-value" th:text="${username}">admin</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Cart Items</div>
+                    <div class="stat-value" th:text="${cartItemCount}">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-card">
+            <div>
+                <div class="eyebrow">Quick Access</div>
+                <h2 class="quick-title">Tập trung đúng chức năng cần dùng</h2>
+                <p class="quick-text">Bài này chỉ cần một bộ màn hình rõ ràng, dễ thao tác và nhất quán toàn site.</p>
+            </div>
+            <div class="mini-list">
+                <a class="mini-item" th:href="@{/products}">
+                    <strong>Sản phẩm</strong>
+                    <span>Tìm kiếm, lọc, sort, pagination</span>
+                </a>
+                <a class="mini-item" th:href="@{/categories}">
+                    <strong>Danh mục</strong>
+                    <span>Quản lý nhóm sản phẩm</span>
+                </a>
+                <a class="mini-item" th:href="@{/cart}">
+                    <strong>Giỏ hàng</strong>
+                    <span>Quantity, tổng tiền, checkout</span>
+                </a>
+            </div>
+        </div>
+    </div>
 </section>
 </body>
 </html>

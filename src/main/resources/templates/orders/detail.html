@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Chi tiết đơn hàng</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <style>
+        .eyebrow { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #6d6d6d; margin-bottom: 10px; }
+        h1 { color: #111111; font-size: 42px; letter-spacing: -0.06em; line-height: 1; margin-bottom: 12px; }
+        .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+        .meta-card { background: rgba(255,255,255,0.88); border: 1px solid rgba(17,17,17,0.08); border-radius: 20px; padding: 18px; }
+        .label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6d6d6d; margin-bottom: 8px; }
+        .value { font-size: 20px; font-weight: 700; color: #111111; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.88); border-radius: 24px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.06); }
+        th { background: #111111; color: #fff; padding: 16px; text-align: left; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+        td { padding: 16px; border-bottom: 1px solid rgba(17,17,17,0.08); font-size: 14px; }
+        .btn { display: inline-block; margin-top: 20px; padding: 12px 18px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid rgba(17,17,17,0.12); background: #111111; color: #fff; }
+        @media (max-width: 768px) { .meta { grid-template-columns: 1fr; } }
+    </style>
+
+    <div class="eyebrow">Admin</div>
+    <h1 th:text="'Đơn hàng #' + ${order.id}">Đơn hàng #1</h1>
+
+    <div class="meta">
+        <div class="meta-card">
+            <div class="label">Người đặt</div>
+            <div class="value" th:text="${order.account.loginName}">user1</div>
+        </div>
+        <div class="meta-card">
+            <div class="label">Ngày đặt</div>
+            <div class="value" th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">30/03/2026 09:00</div>
+        </div>
+        <div class="meta-card">
+            <div class="label">Tổng tiền</div>
+            <div class="value" th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')}">0</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detail : ${order.orderDetails}">
+            <td th:text="${detail.product.name}">Tên SP</td>
+            <td th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT')}">0</td>
+            <td th:text="${detail.quantity}">1</td>
+            <td th:text="${#numbers.formatDecimal(detail.subtotal, 0, 'COMMA', 0, 'POINT')}">0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin/orders}" class="btn">Quay lại danh sách đơn</a>
+</section>
+</body>
+</html>

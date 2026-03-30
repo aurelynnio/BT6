@@ -9,28 +9,31 @@
 <section layout:fragment="content">
     <style>
         .forbidden-wrap {
-            max-width: 720px;
+            max-width: 760px;
             margin: 24px auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-            padding: 32px;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(17,17,17,0.08);
+            border-radius: 28px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+            padding: 40px;
             text-align: center;
         }
         .code {
-            font-size: 54px;
+            font-size: 72px;
             font-weight: 800;
-            color: #e63946;
+            color: #111111;
             line-height: 1;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            letter-spacing: -0.06em;
         }
         .title {
-            font-size: 28px;
-            color: #1a1a2e;
-            margin-bottom: 10px;
+            font-size: 34px;
+            color: #111111;
+            margin-bottom: 12px;
+            letter-spacing: -0.04em;
         }
         .desc {
-            color: #555;
+            color: #666;
             line-height: 1.6;
             margin-bottom: 24px;
         }
@@ -42,19 +45,20 @@
         }
         .btn {
             display: inline-block;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 13px 20px;
+            border-radius: 999px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
+            border: 1px solid rgba(17,17,17,0.12);
         }
         .btn-home {
-            background: #4361ee;
+            background: #111111;
             color: #fff;
+            border-color: #111111;
         }
         .btn-back {
-            background: #f1f3f5;
-            color: #1a1a2e;
-            border: 1px solid #dee2e6;
+            background: #fff;
+            color: #111111;
         }
     </style>
 
@@ -66,7 +70,7 @@
             Vui lòng đăng nhập bằng tài khoản có quyền ADMIN để tiếp tục.
         </p>
         <div class="actions">
-            <a th:href="@{/products}" class="btn btn-home">Quay lại danh sách sản phẩm</a>
+            <a th:href="@{/products}" class="btn btn-home">Quay lại sản phẩm</a>
             <a href="javascript:history.back()" class="btn btn-back">Quay lại trang trước</a>
         </div>
     </div>

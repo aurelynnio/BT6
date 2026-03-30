@@ -8,21 +8,21 @@
 <body>
 <section layout:fragment="content">
     <style>
-        h1 { color: #1a1a2e; margin-bottom: 24px; font-size: 26px; }
-        .form-card { background: #fff; border-radius: 10px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); max-width: 500px; }
+        .eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #6d6d6d; margin-bottom: 12px; }
+        h1 { color: #111111; margin-bottom: 24px; font-size: 42px; letter-spacing: -0.05em; }
+        .form-card { background: rgba(255,255,255,0.9); border-radius: 28px; padding: 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.08); max-width: 640px; border: 1px solid rgba(17,17,17,0.08); }
         .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #333; font-size: 14px; }
-        .form-group input { width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; transition: border-color 0.2s; }
-        .form-group input:focus { outline: none; border-color: #4361ee; box-shadow: 0 0 0 3px rgba(67,97,238,0.1); }
-        .error { color: #e63946; font-size: 13px; margin-top: 4px; }
-        .btn { display: inline-block; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; border: none; transition: background 0.2s; }
-        .btn-primary { background: #4361ee; color: #fff; }
-        .btn-primary:hover { background: #3a56d4; }
-        .btn-secondary { background: #6c757d; color: #fff; margin-left: 8px; }
-        .btn-secondary:hover { background: #5a6268; }
-        .form-actions { margin-top: 24px; display: flex; align-items: center; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #444; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; }
+        .form-group input { width: 100%; padding: 14px 16px; border: 1px solid rgba(17,17,17,0.12); border-radius: 18px; font-size: 14px; transition: border-color 0.2s; }
+        .form-group input:focus { outline: none; border-color: rgba(17,17,17,0.28); box-shadow: 0 0 0 4px rgba(17,17,17,0.05); }
+        .error { color: #b00020; font-size: 13px; margin-top: 6px; }
+        .btn { display: inline-block; padding: 14px 22px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; cursor: pointer; border: 1px solid rgba(17,17,17,0.12); }
+        .btn-primary { background: #111111; color: #fff; border-color: #111111; }
+        .btn-secondary { background: #fff; color: #111111; }
+        .form-actions { margin-top: 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     </style>
 
+    <div class="eyebrow">Categories</div>
     <h1 th:text="${mode == 'edit' ? 'Sửa danh mục' : 'Thêm danh mục'}">Form danh mục</h1>
 
     <div class="form-card">
@@ -30,7 +30,7 @@
               method="post" th:object="${category}">
 
             <div class="form-group">
-                <label for="name">Tên danh mục <span style="color:#e63946">*</span></label>
+                <label for="name">Tên danh mục <span style="color:#b00020">*</span></label>
                 <input type="text" id="name" th:field="*{name}" placeholder="Nhập tên danh mục" />
                 <div th:if="${#fields.hasErrors('name')}" class="error">
                     <span th:errors="*{name}">Lỗi tên</span>

@@ -4,7 +4,13 @@ import com.example.demo.model.Category;
 import com.example.demo.model.Product;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +28,24 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public Page<Product> searchProducts(String keyword, Long categoryId, String sortBy, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, buildSort(sortBy));
+        Specification<Product> specification = (root, query, cb) -> cb.conjunction();
+
+        if (StringUtils.hasText(keyword)) {
+            String normalizedKeyword = keyword.trim().toLowerCase();
+            specification = specification.and((root, query, cb) ->
+                cb.like(cb.lower(root.get("name")), "%" + normalizedKeyword + "%"));
+        }
+
+        if (categoryId != null) {
+            specification = specification.and((root, query, cb) ->
+                cb.equal(root.get("category").get("id"), categoryId));
+        }
+
+        return productRepository.findAll(specification, pageable);
     }
 
     public Optional<Product> getProductById(Long id) {
@@ -54,5 +78,15 @@ public class ProductService {
 
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+
+    private Sort buildSort(String sortBy) {
+        if ("priceAsc".equalsIgnoreCase(sortBy)) {
+            return Sort.by(Sort.Direction.ASC, "price");
+        }
+        if ("priceDesc".equalsIgnoreCase(sortBy)) {
+            return Sort.by(Sort.Direction.DESC, "price");
+        }
+        return Sort.by(Sort.Direction.ASC, "id");
     }
 }

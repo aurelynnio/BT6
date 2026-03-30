@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Quản lý đơn hàng</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <style>
+        .eyebrow { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #6d6d6d; margin-bottom: 10px; }
+        h1 { color: #111111; font-size: 48px; letter-spacing: -0.06em; line-height: .95; margin-bottom: 12px; }
+        .sub { margin-bottom: 24px; color: #666; line-height: 1.7; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.88); border-radius: 24px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.06); }
+        th { background: #111111; color: #fff; padding: 16px; text-align: left; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+        td { padding: 16px; border-bottom: 1px solid rgba(17,17,17,0.08); font-size: 14px; vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+        .btn { display: inline-block; padding: 10px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 13px; cursor: pointer; border: 1px solid rgba(17,17,17,0.12); background: #111111; color: #fff; }
+        .price { font-weight: 700; }
+        .muted { color: #666; }
+    </style>
+
+    <div class="eyebrow">Admin</div>
+    <h1>Đơn hàng</h1>
+    <p class="sub">Theo dõi các đơn do user đặt, thời gian đặt và tổng tiền từng đơn.</p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Người đặt</th>
+            <th>Ngày đặt</th>
+            <th>Số sản phẩm</th>
+            <th>Tổng tiền</th>
+            <th>Chi tiết</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">1</td>
+            <td th:text="${order.account.loginName}">user1</td>
+            <td th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">30/03/2026 09:00</td>
+            <td>
+                <span th:text="${#lists.size(order.orderDetails)}">1</span>
+                <span class="muted">mục</span>
+            </td>
+            <td class="price" th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')}">0</td>
+            <td>
+                <a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn">Xem đơn</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(orders)}">
+            <td colspan="6" style="text-align:center; color:#888;">Chưa có đơn hàng nào.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

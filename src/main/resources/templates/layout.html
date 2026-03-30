@@ -4,55 +4,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title layout:title-pattern="$CONTENT_TITLE - Quản lý sản phẩm">Quản lý sản phẩm</title>
+    <title layout:title-pattern="$CONTENT_TITLE - Mono Store">Mono Store</title>
     <style>
+        :root {
+            --bg: #f5f5f3;
+            --panel: rgba(255, 255, 255, 0.82);
+            --text: #111111;
+            --muted: #666666;
+            --border: rgba(17, 17, 17, 0.12);
+            --shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; flex-direction: column; }
-
-        /* Header */
-        .header { background: #1a1a2e; color: #fff; padding: 16px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .header .container { display: flex; justify-content: space-between; align-items: center; }
-        .header .logo { font-size: 22px; font-weight: 700; color: #4361ee; text-decoration: none; }
-        .header nav a { color: #ccc; text-decoration: none; margin-left: 24px; font-size: 15px; font-weight: 500; transition: color 0.2s; }
-        .header nav a:hover, .header nav a.active { color: #fff; }
-
-        /* Container */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; width: 100%; }
-
-        /* Main content */
-        .main-content { flex: 1; padding: 30px 0; }
-
-        /* Footer */
-        .footer { background: #1a1a2e; color: #888; text-align: center; padding: 16px 0; font-size: 13px; margin-top: auto; }
+        body {
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(0,0,0,0.06), transparent 28%),
+                radial-gradient(circle at top right, rgba(0,0,0,0.05), transparent 22%),
+                linear-gradient(180deg, #ffffff 0%, #efefeb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; width: 100%; }
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(18px);
+            background: rgba(245, 245, 243, 0.78);
+            border-bottom: 1px solid var(--border);
+        }
+        .header .container {
+            min-height: 78px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .brand {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+        }
+        .brand-mark {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+        .brand-sub {
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+        .header nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .header nav a, .header nav button {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+        }
+        .header nav a:hover, .header nav button:hover {
+            color: var(--text);
+            border-color: var(--border);
+            background: rgba(255, 255, 255, 0.72);
+        }
+        .header .nav-cta {
+            color: #ffffff;
+            background: #111111;
+            border-color: #111111;
+        }
+        .header .nav-cta:hover {
+            color: #ffffff;
+            background: #000000;
+            border-color: #000000;
+        }
+        .cart-link { position: relative; }
+        .cart-badge {
+            position: absolute;
+            top: 2px;
+            right: 0;
+            transform: translate(45%, -45%);
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #111111;
+            color: #ffffff;
+            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.85);
+        }
+        .main-content { flex: 1; padding: 40px 0 56px; }
+        .page-shell {
+            background: var(--panel);
+            border: 1px solid rgba(255,255,255,0.75);
+            box-shadow: var(--shadow);
+            border-radius: 32px;
+            padding: 28px;
+        }
+        .footer {
+            padding: 20px 0 28px;
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .header .container { align-items: flex-start; padding-top: 18px; padding-bottom: 18px; flex-direction: column; }
+            .container { padding: 0 16px; }
+            .main-content { padding-top: 24px; }
+            .page-shell { padding: 18px; border-radius: 24px; }
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
-            <a th:href="@{/}" class="logo">QLSP</a>
+            <a th:href="@{/}" class="brand">
+                <span class="brand-mark">Mono Store</span>
+                <span class="brand-sub">Minimal Product System</span>
+            </a>
             <nav>
-                <a th:href="@{/}">Trang chủ</a>
+                <a th:href="@{/}">Tổng quan</a>
                 <a th:href="@{/products}">Sản phẩm</a>
                 <a th:href="@{/categories}">Danh mục</a>
-                <a th:href="@{/books}">Sách</a>
+                <a th:if="${isAdmin}" th:href="@{/admin/orders}">Đơn hàng</a>
+                <a th:href="@{/cart}" class="cart-link nav-cta">
+                    Giỏ hàng
+                    <span class="cart-badge" th:text="${cartItemCount}">0</span>
+                </a>
+                <form th:action="@{/logout}" method="post" style="margin:0;">
+                    <button type="submit">Đăng xuất</button>
+                </form>
             </nav>
         </div>
     </header>
 
-    <!-- Content area -->
     <main class="main-content">
         <div class="container">
-            <section layout:fragment="content">
-                <p>Nội dung trang</p>
-            </section>
+            <div class="page-shell">
+                <section layout:fragment="content">
+                    <p>Nội dung trang</p>
+                </section>
+            </div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Quản lý sản phẩm - Spring Boot Demo</p>
+            <p>&copy; 2026 Mono Store</p>
+            <p>Black and White Minimal Interface</p>
         </div>
     </footer>
 </body>

@@ -16,17 +16,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/uploads/**", "/css/**", "/js/**", "/images/**", "/403").permitAll()
+                .requestMatchers("/", "/login", "/uploads/**", "/css/**", "/js/**", "/images/**", "/403").permitAll()
                 .requestMatchers(HttpMethod.POST, "/products", "/product/add").hasRole("ADMIN")
                 .requestMatchers(
                     "/product/add", "/products/new", "/products/edit/**", "/products/delete/**",
-                    "/categories/new", "/categories/edit/**", "/categories/delete/**"
+                    "/categories/new", "/categories/edit/**", "/categories/delete/**",
+                    "/admin/orders/**"
                 ).hasRole("ADMIN")
-                .requestMatchers("/home", "/products/**", "/categories/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/home", "/products/**", "/categories/**", "/cart/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
             )
             .exceptionHandling(exception -> exception.accessDeniedPage("/403"))
-            .formLogin(Customizer.withDefaults())
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)
+                .permitAll()
+            )
             .httpBasic(Customizer.withDefaults())
             .logout(Customizer.withDefaults());
 

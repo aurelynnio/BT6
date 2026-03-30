@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Product;
+import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,18 +23,30 @@ import java.util.UUID;
 public class ProductWebController {
 
     private final ProductService productService;
+    private final CartService cartService;
 
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
 
-    public ProductWebController(ProductService productService) {
+    public ProductWebController(ProductService productService, CartService cartService) {
         this.productService = productService;
+        this.cartService = cartService;
     }
 
     // Danh sách sản phẩm
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+    public String list(@RequestParam(defaultValue = "") String keyword,
+                       @RequestParam(required = false) Long categoryId,
+                       @RequestParam(defaultValue = "") String sort,
+                       @RequestParam(defaultValue = "0") int page,
+                       Model model) {
+        Page<Product> productPage = productService.searchProducts(keyword, categoryId, sort, Math.max(page, 0), 5);
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("categories", productService.getAllCategories());
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("sort", sort);
         return "products/list";
     }
 
@@ -127,6 +142,18 @@ public class ProductWebController {
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         productService.deleteProduct(id);
         redirectAttributes.addFlashAttribute("successMessage", "Xóa sản phẩm thành công!");
+        return "redirect:/products";
+    }
+
+    @PostMapping("/{id}/add-to-cart")
+    public String addToCart(@PathVariable Long id,
+                            @RequestParam(defaultValue = "1") int quantity,
+                            HttpSession session,
+                            RedirectAttributes redirectAttributes) {
+        Product product = productService.getProductById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sản phẩm"));
+        cartService.addToCart(session, product, Math.max(quantity, 1));
+        redirectAttributes.addFlashAttribute("successMessage", "Đã thêm sản phẩm vào giỏ hàng");
         return "redirect:/products";
     }
 

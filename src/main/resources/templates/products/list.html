@@ -8,78 +8,137 @@
 <body>
 <section layout:fragment="content">
     <style>
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        h1 { color: #1a1a2e; font-size: 28px; }
-        .btn { display: inline-block; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; border: none; transition: background 0.2s; }
-        .btn-primary { background: #4361ee; color: #fff; }
-        .btn-primary:hover { background: #3a56d4; }
-        .btn-danger { background: #e63946; color: #fff; }
-        .btn-danger:hover { background: #c62828; }
-        .btn-warning { background: #f4a261; color: #fff; }
-        .btn-warning:hover { background: #e08b3a; }
-        .btn-sm { padding: 6px 14px; font-size: 13px; }
-        .success-msg { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 12px 20px; border-radius: 6px; margin-bottom: 16px; }
-        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        th { background: #4361ee; color: #fff; padding: 14px 16px; text-align: left; font-size: 14px; }
-        td { padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 14px; vertical-align: middle; }
+        .top-bar { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+        .eyebrow { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #6d6d6d; margin-bottom: 10px; }
+        h1 { color: #111111; font-size: 48px; line-height: .95; letter-spacing: -0.06em; }
+        .sub { margin-top: 12px; color: #666; max-width: 52ch; line-height: 1.7; }
+        .toolbar { display: grid; grid-template-columns: 1.5fr 1fr 1fr auto; gap: 12px; margin-bottom: 20px; padding: 18px; border: 1px solid rgba(17,17,17,0.08); border-radius: 24px; background: rgba(255,255,255,0.88); }
+        .btn { display: inline-block; padding: 13px 18px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; cursor: pointer; border: 1px solid rgba(17,17,17,0.12); transition: background 0.2s, color 0.2s; }
+        .btn-primary { background: #111111; color: #fff; border-color: #111111; }
+        .btn-danger { background: #fff; color: #111111; }
+        .btn-warning { background: #f0f0ed; color: #111111; }
+        .btn-sm { padding: 9px 14px; font-size: 13px; }
+        .success-msg { background: rgba(17,17,17,0.05); color: #111111; border: 1px solid rgba(17,17,17,0.12); padding: 14px 18px; border-radius: 18px; margin-bottom: 18px; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.88); border-radius: 24px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.06); }
+        th { background: #111111; color: #fff; padding: 16px; text-align: left; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+        td { padding: 16px; border-bottom: 1px solid rgba(17,17,17,0.08); font-size: 14px; vertical-align: middle; }
         tr:last-child td { border-bottom: none; }
-        tr:hover td { background: #f8f9ff; }
-        .product-img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
-        .no-img { width: 60px; height: 60px; background: #eee; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 11px; }
-        .actions { display: flex; gap: 6px; align-items: center; }
+        tr:hover td { background: rgba(17,17,17,0.025); }
+        .product-img { width: 68px; height: 68px; object-fit: cover; border-radius: 18px; border: 1px solid rgba(17,17,17,0.08); }
+        .no-img { width: 68px; height: 68px; background: #f0f0ed; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 11px; border: 1px solid rgba(17,17,17,0.08); }
+        .actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
         .actions form { margin: 0; }
-        .category-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; background: #e3f2fd; color: #1565c0; }
-        .price { font-weight: 600; color: #e63946; }
+        .category-badge { display: inline-block; padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; background: #111111; color: #fff; }
+        .price { font-weight: 700; color: #111111; }
+        .toolbar input, .toolbar select { width: 100%; padding: 13px 14px; border: 1px solid rgba(17,17,17,0.12); border-radius: 16px; background: #fff; }
+        .toolbar .btn { width: 100%; }
+        .add-cart-form { display: inline-flex; gap: 6px; align-items: center; }
+        .add-cart-form input { width: 64px; padding: 9px 10px; border: 1px solid rgba(17,17,17,0.12); border-radius: 14px; }
+        .btn-success { background: #111111; color: #fff; border-color: #111111; }
+        .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; gap: 16px; }
+        .pagination .links { display: flex; gap: 8px; }
+        .pagination .btn[aria-disabled="true"] { background: #deded8; color: #888; pointer-events: none; }
+        @media (max-width: 960px) { .toolbar { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            h1 { font-size: 38px; }
+            table { display: block; overflow-x: auto; }
+            .pagination { flex-direction: column; align-items: flex-start; }
+        }
     </style>
 
     <div class="top-bar">
-        <h1>Quản lý sản phẩm</h1>
-        <a th:href="@{/product/add}" class="btn btn-primary">+ Thêm sản phẩm</a>
+        <div>
+            <div class="eyebrow">Products</div>
+            <h1>Danh sách sản phẩm</h1>
+            <p class="sub">Tìm kiếm theo tên, lọc theo danh mục, sắp xếp theo giá và thêm nhanh vào giỏ hàng trên cùng một màn hình.</p>
+        </div>
+        <a th:href="@{/product/add}" class="btn btn-primary">Thêm sản phẩm</a>
     </div>
 
     <div th:if="${successMessage}" class="success-msg">
         <span th:text="${successMessage}"></span>
     </div>
 
+    <form th:action="@{/products}" method="get" class="toolbar">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm theo tên sản phẩm" />
+        <select name="categoryId">
+            <option value="">Tất cả danh mục</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"
+                    th:selected="${categoryId != null and categoryId == category.id}">
+                Danh mục
+            </option>
+        </select>
+        <select name="sort">
+            <option value="">Mặc định</option>
+            <option value="priceAsc" th:selected="${sort == 'priceAsc'}">Giá tăng dần</option>
+            <option value="priceDesc" th:selected="${sort == 'priceDesc'}">Giá giảm dần</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Lọc kết quả</button>
+    </form>
+
     <table>
         <thead>
-            <tr>
-                <th>Mã SP</th>
-                <th>Hình ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Giá (VNĐ)</th>
-                <th>Danh mục</th>
-                <th>Thao tác</th>
-            </tr>
+        <tr>
+            <th>Mã SP</th>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá (VNĐ)</th>
+            <th>Danh mục</th>
+            <th>Giỏ hàng</th>
+            <th>Thao tác</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="product : ${products}">
-                <td th:text="${product.id}">1</td>
-                <td>
-                    <img th:if="${product.image != null and !product.image.isEmpty()}"
-                         th:src="@{'/uploads/' + ${product.image}}"
-                         alt="product image" class="product-img" />
-                    <div th:if="${product.image == null or product.image.isEmpty()}" class="no-img">No img</div>
-                </td>
-                <td th:text="${product.name}">Tên SP</td>
-                <td class="price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">0</td>
-                <td>
-                    <span class="category-badge"
-                          th:text="${product.category != null ? product.category.name : 'N/A'}">Danh mục</span>
-                </td>
-                <td class="actions">
-                    <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning btn-sm">Sửa</a>
-                    <form th:action="@{/products/delete/{id}(id=${product.id})}" method="post"
-                          onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
-                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-            <tr th:if="${#lists.isEmpty(products)}">
-                <td colspan="6" style="text-align:center; padding: 30px; color: #999;">Chưa có sản phẩm nào.</td>
-            </tr>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}">1</td>
+            <td>
+                <img th:if="${product.image != null and !product.image.isEmpty()}"
+                     th:src="@{'/uploads/' + ${product.image}}"
+                     alt="product image" class="product-img" />
+                <div th:if="${product.image == null or product.image.isEmpty()}" class="no-img">No img</div>
+            </td>
+            <td th:text="${product.name}">Tên SP</td>
+            <td class="price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">0</td>
+            <td>
+                <span class="category-badge"
+                      th:text="${product.category != null ? product.category.name : 'N/A'}">Danh mục</span>
+            </td>
+            <td>
+                <form th:action="@{/products/{id}/add-to-cart(id=${product.id})}" method="post" class="add-cart-form">
+                    <input type="number" name="quantity" min="1" value="1" />
+                    <button type="submit" class="btn btn-success btn-sm">Thêm</button>
+                </form>
+            </td>
+            <td class="actions">
+                <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                <form th:action="@{/products/delete/{id}(id=${product.id})}" method="post"
+                      onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(products)}">
+            <td colspan="7" style="text-align:center; padding: 30px; color: #999;">Không tìm thấy sản phẩm phù hợp.</td>
+        </tr>
         </tbody>
     </table>
+
+    <div class="pagination">
+        <div>
+            Trang <strong th:text="${productPage.number + 1}">1</strong> /
+            <strong th:text="${productPage.totalPages == 0 ? 1 : productPage.totalPages}">1</strong>
+        </div>
+        <div class="links">
+            <a class="btn btn-warning btn-sm"
+               th:href="@{/products(page=${productPage.number - 1}, keyword=${keyword}, categoryId=${categoryId}, sort=${sort})}"
+               th:attr="aria-disabled=${!productPage.hasPrevious()}">Previous</a>
+            <a class="btn btn-primary btn-sm"
+               th:href="@{/products(page=${productPage.number + 1}, keyword=${keyword}, categoryId=${categoryId}, sort=${sort})}"
+               th:attr="aria-disabled=${!productPage.hasNext()}">Next</a>
+        </div>
+    </div>
 </section>
 </body>
 </html>
